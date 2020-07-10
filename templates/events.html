@@ -133,101 +133,6 @@
           </div>
 
 
-          <!-- review section -->
-          <div>
-
-         
-
-            <h1>Reviews 
-              {% if user.is_authenticated %}
-                <i class="material-icons add_review_icon" title="Add your own review" data-toggle="collapse" data-target="#reviewForm">add</i>
-              {% else %}
-                <i class="material-icons add_review_icon" title="Add your own review" onclick="ask_to_online()">add</i>
-
-              
-              {% endif %}
-            </h1>
-
-            
-            <div class="collapse" id="reviewForm">
-              <form action="" method="post" class="my-3">
-                {% csrf_token %}
-                
-                <div class="form-group">
-                  <textarea class="form-control" name="myReview" placeholder="Write your review here!" rows="3" required></textarea>
-                </div>
-                <input type="hidden" name="eventID" value="{{event.id}}">
-                <div class="row">
-                  <div class="col-sm-4 py-2">
-                    <div class="form-group">
-                      <select class="form-control" name="ratings" required>
-                        <option value="">Select experience</option>
-                        <option value="5">Amazing experience</option>
-                        <option value="4">Better experience</option>
-                        <option value="3">Good experience</option>
-                        <option value="2">Bad experience</option>
-                        <option value="1">Worst experience</option>
-    
-                      </select>
-                    </div>
-                  </div>
-    
-                  <div class="col-sm-4 py-2">
-                    <button class="btn event-btns px-4" type="submit">Post</button>
-    
-                  </div>
-                </div>
-    
-              </form>
-
-            </div>
-            <br>
-            {% if reviews %}
-                {% for review in reviews %}
-
-                <div class="profile p-3 mb-3">
-                  <div class="row text-left">
-                    <div class="col-sm-12 d-flex">
-                      <img src="media/profilePics/{{review.author_picture}}" alt="" style="width: 55px; height: 55px; border: solid 1px grey; border-radius: 100%;">
-                      <div class="mx-3">
-                        <h4>{{review.author_name}} <span class="ratingNumber" style="opacity: 0;">{{review.review_star}}</span></h4>
-                        <div style="display: inline;" class="ratingParent" >
-                          <i class="material-icons text-lightgrey" style="margin-right: -7px;">star</i>
-                          <i class="material-icons text-lightgrey" style="margin-right: -7px;">star</i>
-                          <i class="material-icons text-lightgrey" style="margin-right: -7px;">star</i>
-                          <i class="material-icons text-lightgrey" style="margin-right: -7px;">star</i>
-                          <i class="material-icons text-lightgrey" style="margin-right: -7px;">star</i>
-    
-                        </div>
-                        
-                      </div>
-                    </div>
-    
-                    <div class="col-sm-12 pt-2">
-                        {{review.review_msg}}
-
-                        <p class="text-success p-0 m-0 pt-2" style="font-size: 15px;">{{review.date}}</p>
-                    </div>
-
-                  
-                  </div>
-    
-                </div>
-
-
-
-                {% endfor %}
-              
-
-            {% else %}
-              
-              <h3 class="text-secondary">No reviews yet!</h3>
-            {% endif %}
-         
-         
-          </div>
-        
-          <!-- review section ends -->
           
         </div>
         
@@ -477,6 +382,108 @@
 
         </div>
 
+      </div>
+
+      <br>
+      <div class="row">
+        <div class="col-md-8">
+          
+          <!-- review section -->
+          <div>
+
+         
+
+            <h1>Reviews 
+              {% if user.is_authenticated %}
+                <i class="material-icons add_review_icon" title="Add your own review" data-toggle="collapse" data-target="#reviewForm">add</i>
+              {% else %}
+                <i class="material-icons add_review_icon" title="Add your own review" onclick="ask_to_online()">add</i>
+
+              
+              {% endif %}
+            </h1>
+
+            
+            <div class="collapse" id="reviewForm">
+              <form action="" method="post" class="my-3">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                  <textarea class="form-control" name="myReview" placeholder="Write your review here!" rows="3" required></textarea>
+                </div>
+                <input type="hidden" name="eventID" value="{{event.id}}">
+                <div class="row">
+                  <div class="col-sm-4 py-2">
+                    <div class="form-group">
+                      <select class="form-control" name="ratings" required>
+                        <option value="">Select experience</option>
+                        <option value="5">Amazing experience</option>
+                        <option value="4">Better experience</option>
+                        <option value="3">Good experience</option>
+                        <option value="2">Bad experience</option>
+                        <option value="1">Worst experience</option>
+    
+                      </select>
+                    </div>
+                  </div>
+    
+                  <div class="col-sm-4 py-2">
+                    <button class="btn event-btns px-4" type="submit">Post</button>
+    
+                  </div>
+                </div>
+    
+              </form>
+
+            </div>
+            <br>
+            {% if reviews %}
+                {% for review in reviews %}
+
+                <div class="profile p-3 mb-3">
+                  <div class="row text-left">
+                    <div class="col-sm-12 d-flex">
+                      <img src="media/profilePics/{{review.author_picture}}" alt="" style="width: 55px; height: 55px; border: solid 1px grey; border-radius: 100%;">
+                      <div class="mx-3">
+                        <h4>{{review.author_name}} <span class="ratingNumber" style="opacity: 0;">{{review.review_star}}</span></h4>
+                        <div style="display: inline;" class="ratingParent" >
+                          <i class="material-icons text-lightgrey" style="margin-right: -7px;">star</i>
+                          <i class="material-icons text-lightgrey" style="margin-right: -7px;">star</i>
+                          <i class="material-icons text-lightgrey" style="margin-right: -7px;">star</i>
+                          <i class="material-icons text-lightgrey" style="margin-right: -7px;">star</i>
+                          <i class="material-icons text-lightgrey" style="margin-right: -7px;">star</i>
+    
+                        </div>
+                        
+                      </div>
+                    </div>
+    
+                    <div class="col-sm-12 pt-2">
+                        {{review.review_msg}}
+
+                        <p class="text-success p-0 m-0 pt-2" style="font-size: 15px;">{{review.date}}</p>
+                    </div>
+
+                  
+                  </div>
+    
+                </div>
+
+
+
+                {% endfor %}
+              
+
+            {% else %}
+              
+              <h3 class="text-secondary">No reviews yet!</h3>
+            {% endif %}
+         
+         
+          </div>
+        
+          <!-- review section ends -->
+        </div>
       </div>
 
      
