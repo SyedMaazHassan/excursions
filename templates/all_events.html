@@ -1,0 +1,129 @@
+{% load static %}
+
+{% include 'inc/head.inc.html' %}
+
+<body>
+
+  <!-- navbar start -->
+  {% include 'inc/navBar.inc.html' %} 
+  <!-- navbar end -->
+
+
+<!-- member section -->
+  <br>
+  <br>
+  <br>
+
+
+  <section id="popular-courses" class="courses">
+    <div class="container" data-aos="fade-up">
+
+      <div class="section-title">
+        <p>All excursions</p>
+      </div>
+
+      <p><i>Filterize excursions from available type, place and dates!</i></p>
+
+      <form action="excursions" method="GET">
+
+
+        <div class="row">
+          <div class="col-xl-3">
+            <select name="typeFilter" id="typeFilter" class="custom-select mb-3 px-3" style="height: 60px;">
+              <option selected disabled>Select Excursion type</option>
+              {% for type in available_types %}
+                <option value="{{type}}">{{type}}</option>
+
+              {% endfor %}
+            </select>
+
+          </div>
+          <div class="col-xl-3">
+            <select name="placeFilter" id="placeFilter" class="custom-select mb-3 px-3" style="height: 60px;">
+              <option selected disabled>Select Excursion place</option>
+              {% for place in available_places %}
+                <option value="{{place}}">{{place}}</option>
+
+              {% endfor %}
+            </select>
+
+          </div>
+          <div class="col-xl-3">
+            
+            <input class="form-control px-3 mb-3" type="text" id="dateFilter" name="dateFilter" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Excursion date" style="height: 60px;">                    
+
+
+          </div>
+          <div class="col-xl-3">
+            <button type="submit" class="btn btn-block applyFildersBtn">Apply filters</button>
+          </div>
+        </div>
+
+      </form>
+    
+      
+      <br>
+
+      <div class="row" data-aos="zoom-in" data-aos-delay="100">
+        {% if all_ex %}
+          {% for ex in all_ex %}
+            {% if ex %}
+            
+              {% include 'inc/eventSection.inc.html' %}
+
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          <h2 class="mx-3">No excursions found</h2>
+        {% endif %}
+      </div>
+      {% if filter_type or filter_place or filter_date %}
+      <a href="excursions">
+          <button class="btn btn-secondary px-4 my-3" style="height: 60px;">Remove all filters</button>
+      </a>
+      {% endif %}
+
+
+
+    </div>
+  </section>
+
+
+
+  <!-- end member -->
+
+
+
+  <!-- footer start -->
+  {% include 'inc/footer.inc.html' %} 
+
+  <!-- footer end  -->
+
+  {% include 'inc/bottomLinks.inc.html' %} 
+
+</body>
+
+</html>
+
+
+<script>
+  if ("{{filter_type}}" != "") {
+      $('#typeFilter option[value="{{filter_type}}"]').prop('selected', true);
+      $("#typeFilter").css("border", "solid 2px #5fcf80");
+  }
+
+  if ("{{filter_place}}" != "") {
+      $('#placeFilter option[value="{{filter_place}}"]').prop('selected', true);
+      $("#placeFilter").css("border", "solid 2px #5fcf80");
+  }
+
+  if ("{{filter_date}}" != "") {
+      $('#dateFilter').val("{{filter_date}}");
+    
+      $("#dateFilter").css("border", "solid 2px #5fcf80");
+  }
+
+
+
+
+</script>

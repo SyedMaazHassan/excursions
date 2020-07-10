@@ -1,0 +1,400 @@
+{% load static %}
+
+{% include 'inc/head.inc.html' %}
+
+<body>
+
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Add details</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      
+      <!-- Modal body -->
+      <form method="POST" action="profile">
+        {% csrf_token %}
+      <div class="modal-body">
+        <b>Note:</b> once you entered the card details, it can't be changed, so be carefull while entering card details
+        <br>
+        <hr>
+          {% if request.GET.next %}
+            <input type="hidden" name="next" value="{{request.GET.next}}">
+          {% endif %}
+          <div class="row">
+            <div class="col-sm-12">
+              <input class="field form-control my-2" style="width: 100%;" id="card_num" name="card_num" type="text" pattern="[0-9]+" title="User numbers only" minlength="16" maxlength="16" placeholder="Card number" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <input class="field form-control my-2" style="width: 100%" id="exp_date" name="exp_date" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="EXP date" required>                    
+
+            </div>
+            <div class="col-sm-6">
+              <input class="field form-control my-2" style="width: 100%;" id="cvv_num" name="cvv_num" type="text" pattern="[0-9]+"  minlength="3" maxlength="3" placeholder="CVV number" required>
+            </div>
+          </div>
+
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success">Save card</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="creditDetails">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Credit card details</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      
+      <!-- Modal body -->
+      
+      <div class="modal-body">
+          
+          <div class="row">
+            <div class="col-sm-12">
+              <br>
+              <h5>Card Number</h5>
+              <input class="field form-control my-2" style="width: 100%;" type="text"  placeholder="Card number" value="{{USER.card_number}}" readonly>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <br>
+              <h5>EXP date</h5>
+              <input class="field form-control my-2" style="width: 100%;"   type="text" placeholder="EXP date" value="{{USER.exp_date}}" readonly>
+            </div>
+            <div class="col-sm-6">
+              <br>
+              <h5>CVV number</h5>
+              <input class="field form-control my-2" style="width: 100%;" type="text"  minlength="3" maxlength="3" placeholder="CVV number" value="{{USER.cvv_num}}" readonly>
+            </div>
+          </div>
+
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" data-dismiss="modal">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+  <!-- navbar start -->
+  {% include 'inc/navBar.inc.html' %}
+  <!-- navbar end -->
+
+
+<!-- this member section -->
+<br>
+<br>
+<br>
+<main id="main" data-aos="fade-in">
+
+  <!-- ======= Breadcrumbs ======= -->
+
+  <br>
+  <br>
+  <br>
+  <br>
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 my-3">
+        <div class="profile p-4">
+
+            <img src="media/profilePics/{{user.last_name}}" class="my-3" style="width: 110px; height:110px; border-radius: 100%; border:solid 1px grey" alt="">
+     
+            <hr class="p-0 py-0">
+
+            
+
+            <div class="row my-4" style="text-align: left;">
+                <div class="col-1 px-4 d-flex justify-content-right align-items-center">
+                    <i class="material-icons info-icon">person</i>
+                </div>
+                <div class="col-10" style="padding-left: 30px;">
+                    <p class="info-head text-pri">Full Name</p>
+                    <p class="info-sub-head">{{user.first_name}}</p>
+
+                </div>
+            </div>
+
+            <div class="row my-4" style="text-align: left;">
+                <div class="col-1 px-4 d-flex justify-content-right align-items-center">
+                    <i class="material-icons info-icon">email</i>
+                </div>
+                <div class="col-10" style="padding-left: 30px;">
+                    <p class="info-head text-pri">Email</p>
+                    <p class="info-sub-head">{{user.username}}</p>
+
+                </div>
+            </div>
+
+            <div class="row my-4" style="text-align: left;">
+              <div class="col-1 px-4 d-flex justify-content-right align-items-center">
+                  <i class="material-icons info-icon">today</i>
+              </div>
+              
+              <div class="col-10" style="padding-left: 30px;">
+                  <p class="info-head text-pri">Date of birth</p>
+                  <p class="info-sub-head">{{user.email}}</p>
+
+              </div>
+
+
+          </div>
+
+          {% if USER.credit_status %}
+            <button class="btn btn-block btn-secondary" type="button" data-toggle="modal" style="height: 50px;" data-target="#creditDetails">See credit details</button>
+
+          {% else %}
+            <button class="btn btn-block event-btns" type="button" data-toggle="modal" style="height: 50px;" data-target="#myModal">Add credit details</button>
+
+          {% endif %}
+
+
+
+            
+        </div>
+
+         
+      </div>
+
+      <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 my-3">
+        <h2>Booked Excursion</h2>
+      
+        {% if USER.isBooked %}
+
+          {% for booked_ex_info in USER.all_bd %}
+       
+          <div class="card mt-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-11">
+                  <h4 class="card-title mt-2" style="color: #5fcf80;">{{booked_ex_info.event_name}}</h4>
+
+                </div>
+                <div class="col-sm-1">
+                  {% if booked_ex_info.isCompleted %}
+                  <i class="material-icons mt-2" title="Trip completed" style="color: white; background-color: #5fcf80; border-radius: 100%;">done</i>
+                  {% endif %}
+                </div>
+              </div>
+            
+              <hr>
+
+              <div class="row">
+                <div class="col-sm-12">
+
+                    <h5 class="mt-2">Departure details</h5>
+                    <div class="row my-2">
+                      <div class="col-sm-4 d-flex my-2">
+                        <i class="material-icons datetimeIcon">today</i>
+                        <p class="mx-2" id="depAmount_set" style="font-size: 15px;">{{booked_ex_info.deptDate}}</p>
+                      </div>
+
+                      <div class="col-sm-3 d-flex my-2">
+                        <i class="material-icons datetimeIcon">access_time</i>
+                        <p class="mx-2" id="depAmount_set" style="font-size: 15px;">{{booked_ex_info.deptTime}}</p>
+                      </div>
+
+                      <div class="col-sm-5 d-flex my-2">
+                        <i class="material-icons datetimeIcon">location_on</i>
+                        <p class="mx-2" id="depAmount_set" style="font-size: 15px;">{{booked_ex_info.deptPoint}}</p>
+                      </div>
+                   
+                    </div>
+                    <h5 class="mt-2">Return details</h5>
+                    <div class="row my-2">
+                      <div class="col-sm-4 d-flex my-2">
+                        <i class="material-icons datetimeIcon">today</i>
+                        <p class="mx-2" id="depAmount_set" style="font-size: 15px;">{{booked_ex_info.retDate}}</p>
+                      </div>
+
+                      <div class="col-sm-3 d-flex my-2">
+                        <i class="material-icons datetimeIcon">access_time</i>
+                        <p class="mx-2" id="depAmount_set" style="font-size: 15px;">{{booked_ex_info.rettTime}}</p>
+                      </div>
+
+                      <div class="col-sm-5 d-flex my-2">
+                        <i class="material-icons datetimeIcon">location_on</i>
+                        <p class="mx-2" id="depAmount_set" style="font-size: 15px;">{{booked_ex_info.rettPoint}}</p>
+                      </div>
+                   
+                    </div>
+                    <table class="table table-striped" style="text-align: center;">
+                      <thead>
+                        <tr>
+                          <th>Amount per person</th>
+                          <th>Total members</th>
+                          <th>Total Bill</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>&euro; {{booked_ex_info.amount_per_person}}</td>
+                          <td>{{booked_ex_info.total_members}}</td>
+                          <td>&euro; {{booked_ex_info.total_amount}}</td>
+                        </tr>
+                 
+                      </tbody>
+                    </table>
+
+                   
+                </div>
+             
+              </div>  
+
+              <a href="excursion/{{booked_ex_info.event_id}}">
+                <button type="button" class="btn event-btns btn-block">Go to Excursion</button>
+
+              </a>
+
+
+            </div>
+          </div>
+
+          {% endfor %}
+
+          
+
+          
+
+       
+          
+        {% else %}
+          <hr>
+          <div class="my-5">
+            <h2>No Booked Event exists</h2>
+            <a href="excursions">
+              <button class="btn event-btns my-3 px-3" type="button" style="height: 50px;">Go to Excursions</button>
+
+            </a>
+
+          </div>
+
+        {% endif %}
+      </div>
+    </div>
+
+
+
+  </div>
+  <hr>
+
+  <!-- ======= Courses Section ======= -->
+  <!-- <section id="popular-courses" class="courses">
+    <div class="container" data-aos="fade-up">
+
+      <div class="section-title">
+        <p>Events</p>
+      </div>
+
+      <div class="row" data-aos="zoom-in" data-aos-delay="100">
+        {% if events %}
+          {% for event in events %}
+            
+            {% include 'inc/eventSection.inc.html' %} 
+
+          {% endfor %}
+        {% else %}
+          <h2>No event created</h2>
+        {% endif %}
+      </div>
+
+    </div>
+  </section> -->
+  <!-- End Courses Section -->
+
+</main>
+<!-- End #main -->
+  
+
+
+
+  <!-- end this member -->
+
+
+
+  <!-- footer start -->
+  {% include 'inc/footer.inc.html' %} 
+
+  <!-- footer end  -->
+
+  {% include 'inc/bottomLinks.inc.html' %} 
+
+</body>
+
+<script>
+  function add_like(sender_id, receiver_id){
+    $.ajax({
+      url: 'add_like',
+      type: 'GET',
+      data: 'sender='+sender_id.toString()+'&receiver='+receiver_id.toString(),
+      success: function(){
+        $("#like_updates").load(location.href+" #like_updates>*","");
+      }
+    });
+  }
+
+  function send_friend_request(sender_id, receiver_id){
+    console.log(sender_id);
+    console.log(receiver_id);
+    $.ajax({
+      url: 'send_request',
+      type: 'GET',
+      data: 'request_sender='+sender_id.toString()+'&request_receiver='+receiver_id.toString(),
+      success: function(){
+        $("#like_updates").load(location.href+" #like_updates>*","");
+      }
+    });
+  }
+
+  function readURL(input) {
+    nameFile = input.files[0].name.split(".");
+    nameFile = nameFile[nameFile.length-1];
+    console.log(nameFile);
+    if(nameFile=="jpg" || nameFile=="jpeg" || nameFile=="png"){
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#blah')
+                    .attr('src', e.target.result)
+                    .width('100%')
+                    .height(300);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }else{
+        alert("Invalid file type!");
+    }
+    
+}
+
+
+</script>
+
+</html>
