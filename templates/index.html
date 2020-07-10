@@ -10,6 +10,7 @@
   {% include 'inc/navBar.inc.html' %}
   <!-- navbar end -->
 
+
   <!-- ======= Hero Section ======= -->
   <section id="hero" class="d-flex justify-content-center align-items-center">
     <div class="container position-relative" data-aos="zoom-in" data-aos-delay="100">
@@ -303,6 +304,43 @@
       }
     });
   }
+
+  var slider_imgs = [
+        "diamante.jpg",
+        "scalea.jpg",
+        "tropea.jpg",
+        "romito.jpg",
+        "Cristo-e-Porto-di-Maratea.jpg",
+        "cristo-redentore-maratea.jpg",
+        "calabria-san-nicola-arcella-2.jpg"
+  ]
+
+  $("#hero").css("background-image", "url(static/img/diamante.jpg)");
+
+
+
+  function getRandomArbitrary(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  setInterval(function(){
+    let rn = getRandomArbitrary(0, 7);
+    console.log(rn);
+    let element = slider_imgs[rn]
+    console.log(element);
+    $("#hero").css({
+      "background-image": `url(static/img/${element})`,
+      "transition-duration": '1s'
+    })
+
+  }, 4000);
+  
+      
+ 
+
+
+
+
 </script>
 
 </html>
