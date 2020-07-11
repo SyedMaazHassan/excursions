@@ -69,7 +69,7 @@ class user_confirmation(models.Model):
 
 class profile_pics(models.Model):
     id = models.IntegerField(primary_key=True)
-    user_img = models.ImageField(upload_to='profilePics')
+    user_img = models.ImageField(upload_to='profilePics', default="Nothing")
 
     def __str__(self):
         thisUSER = User.objects.get(id=self.id)
