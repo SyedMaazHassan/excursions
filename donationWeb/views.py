@@ -121,7 +121,7 @@ def particular_ex(request, id):
 
 
     for i in available_dates:
-        if i.availability_date > today_date:
+        if i.availability_date.strftime('%Y-%m-%d') > today_date:
             empty_list.append(i)
 
 
