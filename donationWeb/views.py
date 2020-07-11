@@ -39,7 +39,7 @@ def all_excursions(request):
     all_ex = excursions.objects.all()
 
     if request.method == "GET":
-        
+
         filter_type = request.GET['typeFilter'] if 'typeFilter' in request.GET else None
         filter_place = request.GET['placeFilter'] if 'placeFilter' in request.GET else None
         filter_date = request.GET['dateFilter'] if 'dateFilter' in request.GET and request.GET['dateFilter']!=""     else None
@@ -62,17 +62,17 @@ def all_excursions(request):
             all_ex = list(all_ex)
 
             available_ex = list(availability.objects.all().filter(availability_date=filter_date).values_list("select_excursion", flat=True))
-            
+
             for i in range(0, len(available_ex)):
                 available_ex[i] = int(available_ex[i])
-            
-            
+
+
             context['filter_date'] = filter_date
 
             for i in range(0, len(all_ex)):
                 if all_ex[i].id not in available_ex:
                     all_ex[i] = None
-    
+
 
     for i in all_ex:
         if i is not None:
@@ -116,6 +116,20 @@ def particular_ex(request, id):
 
     available_dates = availability.objects.all().filter(select_excursion=str(id), trip_completed=False)
 
+    today_date = datetime.today().strftime('%Y-%m-%d')
+    empty_list = []
+
+
+    for i in available_dates:
+        if i.availability_date > today_date:
+            empty_list.append(i)
+
+
+
+    available_dates = empty_list
+
+
+
     context['available_dates'] = available_dates
 
     if request.user.is_authenticated:
@@ -155,11 +169,11 @@ def particular_ex(request, id):
                 get_credit_card.save()
 
 
-               
+
                 messages.info(request, "Congratulations! this excursion has been booked.")
             else:
                 messages.info(request, "You don't have enough credit to book this excursion!")
-                
+
         else:
             person_id = request.user.id
             person_name = request.user.first_name
@@ -177,7 +191,7 @@ def particular_ex(request, id):
     if isReviewExists:
         all_reviews = ex_reviews.objects.filter(event_id=id)
         context['reviews'] = all_reviews
-       
+
 
     return render(request, "events.html", context)
 
@@ -201,7 +215,7 @@ def profile(request):
                 return redirect(request.POST['next'])
 
         context['USER'] = whole_person_info(request.user.id)
-        
+
 
 
         return render(request, "member.html", context)
@@ -259,7 +273,7 @@ def signup(request):
             if User.objects.filter(username=email).exists():
                 print("Email already taken")
                 messages.info(request, "Entered email already in use!")
-                context['border'] = "email" 
+                context['border'] = "email"
                 return render(request, "signup.html", context)
 
             user = User.objects.create_user(username=email, email=dob, first_name=name, password=pass1, last_name=pic)
@@ -280,7 +294,7 @@ def signup(request):
             return render(request, "signup.html", context)
 
 
-    
+
     return render(request, "signup.html")
 
 
@@ -289,7 +303,7 @@ def authentication(request):
         if request.method == "POST":
             myCode = request.POST['s_code']
             hash_converted = convert_code(myCode)
-            
+
             thisUserCode = user_confirmation.objects.get(id=request.user.id)
 
             if thisUserCode.code_hash == hash_converted:
@@ -302,7 +316,7 @@ def authentication(request):
         return render(request, "authentication.html")
     else:
         return redirect("signup")
-    
+
 def send_security_code(u_id, u_name, u_email):
     # generate code
     security_code = generate_code()
@@ -313,7 +327,7 @@ def send_security_code(u_id, u_name, u_email):
         finding.code_hash = security_code[1]
         finding.is_verified = False
         finding.save()
-    else:        
+    else:
         add_confirmation = user_confirmation(id=u_id, code_hash=security_code[1], is_verified=False)
         add_confirmation.save()
 
@@ -321,7 +335,7 @@ def send_security_code(u_id, u_name, u_email):
     send_html_email(u_name, u_email, security_code[0])
 
 
-def generate_code():    
+def generate_code():
     CHAR = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
     code = ""
     for i in range(0, 6):
