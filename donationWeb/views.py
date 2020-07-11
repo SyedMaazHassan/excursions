@@ -260,7 +260,12 @@ def signup(request):
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
         dob = request.POST['dob']
-        pic = request.FILES['image']
+
+        if 'image' in request.FILES:
+            pic = request.FILES['image']
+        else:
+            pic = "Nothing"
+
         context = {
             "name":name,
             "email":email,
