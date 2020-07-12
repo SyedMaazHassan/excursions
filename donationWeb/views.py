@@ -292,8 +292,8 @@ def signup(request):
 
             send_security_code(request.user.id, request.user.first_name, request.user.username)
 
-            #return redirect("authentication")
-            return redirect("login")
+            return redirect("authentication")
+#             return redirect("login")
         else:
             messages.info(request, "Your pasword doesn't match!")
             context['border'] = "password"
@@ -334,11 +334,11 @@ def send_security_code(u_id, u_name, u_email):
         finding.is_verified = False
         finding.save()
     else:
-        add_confirmation = user_confirmation(id=u_id, code_hash=security_code[1], is_verified=True)
+        add_confirmation = user_confirmation(id=u_id, code_hash=security_code[1], is_verified=False)
         add_confirmation.save()
 
     # send email
-    #send_html_email(u_name, u_email, security_code[0])
+    send_html_email(u_name, u_email, security_code[0])
 
 
 def generate_code():
